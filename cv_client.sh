@@ -78,6 +78,10 @@ ${BOLD}IMPORTANT${NC}
 
 ############# MAIN ##############
 
+if [ "$1" == "-h" ]; then
+	help
+fi
+
 if [ -z "$SSH_HOST" ] || [ -z "$SSH_USER" ] || [ -z "$SSH_KEY" ] || [ -z "$SSH_PORT" ] || [ -z "$VAULT_USER" ]; then
 	error "Error try -h for help and check IMPORTANT section"
 	exit
@@ -120,9 +124,6 @@ umount)
 	success "Vault successfully closed"
 	;;
 
--h | --help | --h)
-	help
-	;;
 *)
 	error "Invalid syntax try $0 -h"
 	;;
