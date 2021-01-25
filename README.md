@@ -13,10 +13,10 @@ Basically an encrypted logic volume is hosted on a server that you mount remotel
 
 ## Features
 
-* Automatic vault installer
+* Automatic installer
 * AES-256-XTS encryption
 * Chrooted
-* Easy client script
+* All-in-one client script
 * Pure bash
 
 ## Installation
