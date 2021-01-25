@@ -49,8 +49,8 @@ SYNTAX
 		  
 PARAMETERS 
 	  [partition]		partition for the vault
-	  [size]		    vault size in megabytes
-	  [user]		    new user for the vault
+	  [size]		vault size in megabytes
+	  [user]		new user for the vault
 ```
 
 ### Client
