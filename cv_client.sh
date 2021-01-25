@@ -1,8 +1,9 @@
 #!/bin/bash
 
 # Author        : Alexandre NESIC
-# Description	: Monte et démonte un coffre distant
-# Param1		: initialise, monte ou démonte le coffre
+# Name			: cv_client.sh
+# Description	: Manage the encrypted vault
+# Param1		: Command to execute
 
 ############# VARIABLES ##############
 
@@ -58,13 +59,6 @@ ${BOLD}COMMANDS${NC}
 	  umount		unmount remote vault
 	  "
 	exit
-}
-
-check() {
-	if [ "$?" -ne 0 ]; then
-		error "An error occurred while executing : $(fc -l -n -1)"
-		exit
-	fi
 }
 
 case $1 in

@@ -1,7 +1,8 @@
 #!/bin/bash
 
+# Author			: Alexandre NESIC
 # Name              : cv_server.sh
-# Description       : create an encrypted vault/COFFRE
+# Description       : Create an encrypted vault
 # Param1            : partition where to build the vault
 # Param2            : size of the vault in megabytes
 # Param3			: new user for the vault
@@ -18,13 +19,13 @@ NORM=$(tput sgr0)
 PARTITION=$1
 SIZE=$2
 VAULT_USER=$3
-
-SSH_PORT=7222
-SSH_KEY=vault_rsa
-
 VAULT_HOME=/home/$VAULT_USER
 
+SSH_KEY=vault_rsa
+SSH_PORT=7222
+
 MNTPOINT="$VAULT_HOME/COFFRE"
+
 VOLGROUP="VGDATA"
 LOGVOLUME="lv_coffre"
 ENC_LOGVOL="${LOGVOLUME}crypt"
@@ -49,7 +50,7 @@ info() {
 # Check return value of last command
 check() {
 	if [ "$?" -ne 0 ]; then
-		error "An error occurred while executing : $(fc -l -n -1)"
+		error "An error occurred"
 		exit
 	fi
 }
@@ -74,25 +75,25 @@ ${BOLD}PARAMETERS${NC}
 
 # Create vault
 vault() {
-	sudo pvcreate -y -qq $PARTITION; check && info "Physical volume $PARTITION successfully created."
-	sudo vgcreate -qq $VOLGROUP $PARTITION; check && info "Volume group $VOLGROUP successfully created"
-	sudo lvcreate -qq -L ${SIZE}M -n $LOGVOLUME $VOLGROUP; check && info "Logical volume $LOGVOLUME created"
-	sudo cryptsetup -qq luksFormat /dev/$VOLGROUP/$LOGVOLUME; check && info "Logical volume successfully encrypted"
-	sudo cryptsetup luksOpen /dev/$VOLGROUP/$LOGVOLUME $ENC_LOGVOL; check && info "Logical volume successfully opened"
-	sudo mkfs.xfs -q /dev/mapper/$ENC_LOGVOL; check && info "Logical volume successfully formated"
+	sudo pvcreate -y -qq $PARTITION && info "Physical volume $PARTITION successfully created."
+	sudo vgcreate -qq $VOLGROUP $PARTITION && info "Volume group $VOLGROUP successfully created"
+	sudo lvcreate -qq -L ${SIZE}M -n $LOGVOLUME $VOLGROUP && info "Logical volume $LOGVOLUME created"
+	sudo cryptsetup -qq luksFormat /dev/$VOLGROUP/$LOGVOLUME && info "Logical volume successfully encrypted"
+	sudo cryptsetup luksOpen /dev/$VOLGROUP/$LOGVOLUME $ENC_LOGVOL && info "Logical volume successfully opened"
+	sudo mkfs.xfs -q /dev/mapper/$ENC_LOGVOL && info "Logical volume successfully formated"
 }
 
 # Create the vault arborescence
 arbo() {
 	if [ ! -d "$MNTPOINT" ]; then
-		sudo mkdir $MNTPOINT; check
+		sudo mkdir $MNTPOINT
 	fi
 
-	sudo mount /dev/mapper/$ENC_LOGVOL $MNTPOINT; check
-	sudo mkdir -p $MNTPOINT/{CERTIFICAT,ENVIRONNEMENT/{bash,ksz,zsh},MEMENTO,SECURITE/{fail2ban,firewall,supervision},SERVER/{apache/{CENTOS8,DEBIAN10},bind,nginx,rsyslog,ssh}}; check && info "Creating arborescence"
+	sudo mount /dev/mapper/$ENC_LOGVOL $MNTPOINT
+	sudo mkdir -p $MNTPOINT/{CERTIFICAT,ENVIRONNEMENT/{bash,ksz,zsh},MEMENTO,SECURITE/{fail2ban,firewall,supervision},SERVER/{apache/{CENTOS8,DEBIAN10},bind,nginx,rsyslog,ssh}} && info "Creating arborescence"
 	sudo chown -R $VAULT_USER:$VAULT_USER $MNTPOINT
-	sudo umount $MNTPOINT; check
-	sudo cryptsetup luksClose /dev/mapper/$ENC_LOGVOL; check
+	sudo umount $MNTPOINT
+	sudo cryptsetup luksClose /dev/mapper/$ENC_LOGVOL
 }
 
 chrooting(){
