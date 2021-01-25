@@ -26,7 +26,7 @@ Basically an encrypted logic volume is hosted on a server that you mount remotel
 ```
 git clone https://github.com/Atsika/CryptoVault.git
 chmod +x cv_server.sh
-./cv_server.sh <partition> <size>
+./cv_server.sh <partition> <size> <user>
 ```
 
 ### Client
