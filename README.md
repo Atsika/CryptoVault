@@ -40,36 +40,39 @@ chmod +x cv_client.sh
 ### Server
 
 ```
-NAME 
+NAME
 	  CryptoVault - Create an encrypted vault (SERVER)
 		  
 SYNTAX
-	  ./cv_server.sh [partition] [size] [user]
-	  ex : ./cv_server.sh /dev/sda1 200 newuser
+	  ./cv_server.sh
 		  
-PARAMETERS 
-	  [partition]		partition for the vault
-	  [size]		vault size in megabytes
-	  [user]		new user for the vault
+IMPORTANT
+	  Don't forget to fill variables at the top of the script.
+	  Don't run this script as root.
+	  Run it with a user that have sudo rights.
 ```
 
 ### Client
 
 ```
-NAME 
+NAME
 	  CryptoVault - Manage an encrypted vault (CLIENT)
 		  
 SYNTAX
 	  ./cv_client.sh [command]
-	  ex : ./cv_client.sh init
 		  
-PARAMETERS 
-	  [command]     	Command to execute
+PARAMETERS
+	  [command]     Command to execute
 
 COMMANDS
 	  init			initialize first connection
 	  mount			mount remote vault
 	  umount		unmount remote vault
+
+IMPORTANT
+	  Don't forget to fill variables at the top of the script.
+	  Don't run this script as root.
+	  Run it with a user that have sudo rights.
 ```
 
 ### TODO
