@@ -3,12 +3,24 @@
 # Author			: Alexandre NESIC
 # Name              : cv_server.sh
 # Description       : Create an encrypted vault
-# Param1            : partition where to build the vault
-# Param2            : size of the vault in megabytes
-# Param3			: new user for the vault
 
 ############# VARIABLES ##############
+# Variables with same name in client and server script must have same value
 
+# Partition on which the vault will be created (e.g. /dev/sda1)
+PARTITION=#/dev/sda9
+# Size of the vault in MEGABYTES (e.g. 200)
+SIZE=#200
+# Name for the new user create only for the vault (e.g. vault)
+VAULT_USER=#coffre
+# Name of new rsa key pair generated to connect to vault (e.g. vault_key)
+SSH_KEY=#vault_key
+# It's recommended to change default SSH port (e.g. 7222)
+SSH_PORT=#7222
+
+############# CONSTANTS ##############
+
+# Text style and colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
@@ -16,19 +28,13 @@ NC='\033[0m'
 BOLD=$(tput bold)
 NORM=$(tput sgr0)
 
-PARTITION=$1
-SIZE=$2
-VAULT_USER=$3
-VAULT_HOME=/home/$VAULT_USER
-
-SSH_KEY=vault_rsa
-SSH_PORT=7222
-
-MNTPOINT="$VAULT_HOME/COFFRE"
-
+# Encrypted logical volume
 VOLGROUP="VGDATA"
 LOGVOLUME="lv_coffre"
 ENC_LOGVOL="${LOGVOLUME}crypt"
+MNTPOINT="$VAULT_HOME/COFFRE"
+
+VAULT_HOME=/home/$VAULT_USER
 
 ############# FUNCTIONS ##############
 
@@ -47,14 +53,6 @@ info() {
 	echo -e "${BLUE}${BOLD}[*][$(date +'%T')] $1${NC}"
 }
 
-# Check return value of last command
-check() {
-	if [ "$?" -ne 0 ]; then
-		error "An error occurred"
-		exit
-	fi
-}
-
 # Help menu
 help() {
 	echo -e "
@@ -62,14 +60,13 @@ ${BOLD}NAME${NC}
 	  CryptoVault - Create an encrypted vault (SERVER)
 		  
 ${BOLD}SYNTAX${NC}
-	  $0 [partition] [size] [user]
-	  ex : $0 /dev/sda1 200 coffre
+	  $0
 		  
-${BOLD}PARAMETERS${NC} 
-	  [partition]		partition for the vault
-	  [size]		vault size in megabytes
-	  [user]		name for new user dedicated to vault
-	  "
+${BOLD}IMPORTANT${NC}
+	  Don't forget to fill variables at the top of the script.
+	  Don't run this script as root.
+	  Run it with a user that have sudo rights.
+"
 	exit
 }
 
@@ -83,8 +80,8 @@ vault() {
 	sudo mkfs.xfs -q /dev/mapper/$ENC_LOGVOL && info "Logical volume successfully formated"
 }
 
-# Create the vault arborescence
-arbo() {
+# Create vault structure
+struct() {
 	if [ ! -d "$MNTPOINT" ]; then
 		sudo mkdir $MNTPOINT
 	fi
@@ -131,8 +128,8 @@ setup_ssh(){
 		sudo mkdir $VAULT_HOME/.ssh
 	fi
 
-	ssh-keygen -b 4096 -t rsa -f $HOME/.ssh/$SSH_KEY -C $VAULT_USER@$(hostname)
-	cat $HOME/.ssh/$SSH_KEY.pub | sudo tee -a $VAULT_HOME/.ssh/authorized_keys > /dev/null
+	ssh-keygen -b 4096 -t rsa -f $VAULT_HOME/.ssh/$SSH_KEY -C $VAULT_USER@$(hostname)
+	cat $VAULT_HOME/.ssh/$SSH_KEY.pub | sudo tee -a $VAULT_HOME/.ssh/authorized_keys > /dev/null
 	sudo chown -R $VAULT_USER:$VAULT_USER $VAULT_HOME/.ssh
 }
 
@@ -142,8 +139,8 @@ if [ "$1" == "-h" ]; then
 	help
 fi
 
-if [ "$#" -ne 3 ]; then
-	error "Wrong number of arguments try -h for help"
+if [ -z "$PARTITION" ] || [ -z "$SIZE" ] || [ -z "$SSH_KEY" ] || [ -z "$SSH_PORT" ]; then
+	error "Error try -h for help and check IMPORTANT section"
 	exit
 fi
 
@@ -155,8 +152,9 @@ fi
 info "Downloading necessary packages"
 sudo apt-get -qq install -qq -y lvm2 cryptsetup > /dev/null 2> /dev/null && success "Packages successfully downloaded"
 
-info "Creating new user $VAULt_USER"
+info "Creating new user $VAULT_USER"
 sudo useradd -m --shell /bin/bash -G sudo $VAULT_USER && success "User successfully created"
+info "Granting special rights"
 echo "coffre ALL=NOPASSWD: /usr/bin/mount, /usr/bin/umount, /usr/sbin/cryptsetup" | sudo EDITOR='tee -a' visudo > /dev/null
 
 info "Generating SSH keys"
@@ -166,8 +164,8 @@ success "SSH keys successfully generated"
 vault
 success "Encrypted vault successfully created"
 
-arbo
-success "Arborescence successfully created"
+struct
+success "Vault structure successfully created"
 
 chrooting
 success "Chroot successfully created"
