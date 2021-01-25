@@ -26,7 +26,6 @@ Basically an encrypted logic volume is hosted on a server that you mount remotel
 ```
 git clone https://github.com/Atsika/CryptoVault.git
 chmod +x cv_server.sh
-./cv_server.sh <partition> <size> <user>
 ```
 
 ### Client
@@ -34,9 +33,43 @@ chmod +x cv_server.sh
 ```
 git clone https://github.com/Atsika/CryptoVault.git
 chmod +x cv_client.sh
-./cv_client.sh init
-./cv_client.sh mount
-./cv_client.sh umount
+```
+
+## Usage
+
+### Server
+
+```
+NAME 
+	  CryptoVault - Create an encrypted vault (SERVER)
+		  
+SYNTAX
+	  ./cv_server.sh [partition] [size] [user]
+	  ex : ./cv_server.sh /dev/sda1 200 newuser
+		  
+PARAMETERS 
+	  [partition]		partition for the vault
+	  [size]		    vault size in megabytes
+	  [user]		    new user for the vault
+```
+
+### Client
+
+```
+NAME 
+	  CryptoVault - Manage an encrypted vault (CLIENT)
+		  
+SYNTAX
+	  ./cv_client.sh [command]
+	  ex : ./cv_client.sh init
+		  
+PARAMETERS 
+	  [command]     Command to execute
+
+COMMANDS
+	  init			initialize first connection
+	  mount			mount remote vault
+	  umount		unmount remote vault
 ```
 
 ### TODO
