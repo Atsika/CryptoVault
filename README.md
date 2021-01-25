@@ -64,7 +64,7 @@ SYNTAX
 	  ex : ./cv_client.sh init
 		  
 PARAMETERS 
-	  [command]     Command to execute
+	  [command]     	Command to execute
 
 COMMANDS
 	  init			initialize first connection
