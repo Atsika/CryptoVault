@@ -15,7 +15,7 @@ Basically an encrypted logic volume is hosted on a server that you mount remotel
 
 * Automatic vault installer
 * AES-256-XTS encryption
-* Chrooted SFTP
+* Chrooted
 * Easy client script
 * Pure bash
 
