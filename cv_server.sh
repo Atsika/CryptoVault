@@ -153,19 +153,10 @@ check_var() {
 	while [ -z "$SIZE" ]
 	do
 		read -p "Enter the size of the partition for CryptoVault (Megabytes) : " SIZE
-
-		MOUNTED=$(mount | grep $PARTITION)
-		if [ -z $MOUNTED ];then
-			sudo mount $PARTITION /mnt
-		fi
-
-		AVAILABLE=$(df -k -B M | grep $PARTITION | awk '{print $4}' | sed 's/M//g')
-		if [ $AVAILABLE -lt $SIZE ];then
-			sudo umount /mnt
-			error "Not enough space on partition $PARTITION"
+		PART_SIZE=$(lsblk -lb /dev/sda4 | awk 'FNR==2{print $4}')
+		if [ "$SIZE" -gt $PART_SIZE ];then
 			SIZE=""
 		fi
-
 	done	
 	
 	while [ -z "$VAULT_USER" ]
