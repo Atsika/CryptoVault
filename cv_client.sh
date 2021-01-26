@@ -145,16 +145,16 @@ mount)
 	ssh -t VAULT "sudo cryptsetup luksOpen /dev/$VOLGROUP/$LOGVOLUME $ENC_LOGVOL && sudo mount /dev/mapper/$ENC_LOGVOL COFFRE"
 	success "Vault successfully decrypted"
 	info "Mouting vault"
-	mkdir COFFRE
-	sshfs -o reconnect VAULT:COFFRE COFFRE
-	success "Vault successfully mounted"
+	mkdir $HOME/COFFRE
+	sshfs -o reconnect VAULT:COFFRE $HOME/COFFRE
+	success "Vault successfully mounted on $HOME/COFFRE"
 	;;
 
 umount)
 	info "Unmounting vault"
-	fusermount -u COFFRE
+	fusermount -u $HOME/COFFRE
 	success "Vault successfully unmounted"
-	rmdir COFFRE
+	rmdir $HOME/COFFRE
 	info "Encrypting and closing vault"
 	ssh -t VAULT "sudo umount COFFRE && sudo cryptsetup luksClose /dev/mapper/$ENC_LOGVOL"
 	success "Vault successfully closed"
