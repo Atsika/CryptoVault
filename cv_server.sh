@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Author			: Alexandre NESIC
+# Author			: Alexandre NESIC & Sean MATTHEWS
 # Name              : cv_server.sh
 # Description       : Create an encrypted vault
 
@@ -53,7 +53,7 @@ info() {
 	echo -e "${BLUE}${BOLD}[*][$(date +'%T')] $1${NC}"
 }
 
-# Help menu
+# Help message
 help() {
 	echo -e "
 ${BOLD}NAME${NC} 
@@ -93,6 +93,7 @@ struct() {
 	sudo cryptsetup luksClose /dev/mapper/$ENC_LOGVOL
 }
 
+# Chroot new vault user
 chrooting(){
 
 	sudo chown root:root $VAULT_HOME
@@ -123,6 +124,7 @@ Match User $VAULT_USER
 	sudo systemctl reload ssh
 }
 
+# Generate SSH keys for the new vault user
 setup_ssh(){
 	if [ ! -d "$VAULT_HOME/.ssh" ]; then
 		sudo mkdir $VAULT_HOME/.ssh
@@ -135,14 +137,44 @@ setup_ssh(){
 
 ############# MAIN ##############
 
+# ./cv_server.sh -h displays help message
 if [ "$1" == "-h" ]; then
 	help
 fi
 
+# Check if variables are all set
 if [ -z "$PARTITION" ] || [ -z "$SIZE" ] || [ -z "$SSH_KEY" ] || [ -z "$SSH_PORT" ]; then
 	error "Error try -h for help and check IMPORTANT section"
 	exit
 fi
+
+# Don't run this script as root, you will be prompted if sudo needed
+if [ "$EUID" -eq 0 ];then 
+	error "Don't run this script as root."
+  	exit
+fi
+
+# Check if partition exists
+lsblk $PARTITION > /dev/null 2> /dev/null
+if [ "$?" -ne 0 ];then
+	error "Couldn't find partition $PARTITION"
+	exit
+fi
+
+# Check if there is enough size on partition
+MOUNTED=$(mount | grep $PARTITION)
+if [ -z $MOUNTED ];then
+	sudo mount $PARTITION /mnt
+fi
+
+AVAILABLE=$(df -k -B M | grep $PARTITION | awk '{print $4}' | sed 's/M//g')
+if [ $AVAILABLE -lt $SIZE ];then
+	sudo umount /mnt
+	error "Not enough space on partition $PARTITION"
+	exit
+fi
+
+sudo umount /mnt
 
 read -p "Partition $PARTITION will be overwritten. Proceed ? [Y/n] " confirm
 if [ "$confirm" != "y" ] && [ "$confirm" != "Y" ] && [ "$confirm" != "" ]; then

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Author        : Alexandre NESIC
+# Author        : Alexandre NESIC & Sean MATTHEWS
 # Name			: cv_client.sh
 # Description	: Manage the encrypted vault
 # Param1		: Command to execute
@@ -51,7 +51,7 @@ info() {
 	echo -e "${BLUE}${BOLD}[*][$(date +'%T')] $1${NC}"
 }
 
-# Help menu
+# Help message
 help() {
 	echo -e "
 ${BOLD}NAME${NC} 
@@ -78,13 +78,21 @@ ${BOLD}IMPORTANT${NC}
 
 ############# MAIN ##############
 
+# ./cv_client.sh -h displays help message
 if [ "$1" == "-h" ]; then
 	help
 fi
 
+# Check if variables are all set
 if [ -z "$SSH_HOST" ] || [ -z "$SSH_USER" ] || [ -z "$SSH_KEY" ] || [ -z "$SSH_PORT" ] || [ -z "$VAULT_USER" ]; then
 	error "Error try -h for help and check IMPORTANT section"
 	exit
+fi
+
+# Don't run this script as root, you will be prompted if sudo needed
+if [ "$EUID" -eq 0 ];then 
+	error "Don't run this script as root."
+  	exit
 fi
 
 case $1 in
