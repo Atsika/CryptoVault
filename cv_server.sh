@@ -135,6 +135,63 @@ setup_ssh(){
 	sudo chown -R $VAULT_USER:$VAULT_USER $VAULT_HOME/.ssh
 }
 
+# check if variables are set
+check_var() {
+	# check if the partition exist
+	while [ -z "$PARTITION" ]
+	do
+		lsblk -l | awk 'NR==1 || / $/ {print $1"\t"$4}'
+		read -p "Enter the partition to be used for CryptoVault : " PARTITION
+		lsblk $PARTITION > /dev/null 2> /dev/null
+		if [ $? -ne 0 ]; then
+			PARTITION=""
+			error "The partition does not exist"
+		fi
+	done	
+	
+	# check if there is enough space on the partition
+	while [ -z "$SIZE" ]
+	do
+		read -p "Enter the size of the partition for CryptoVault (Megabytes) : " SIZE
+
+		MOUNTED=$(mount | grep $PARTITION)
+		if [ -z $MOUNTED ];then
+			sudo mount $PARTITION /mnt
+		fi
+
+		AVAILABLE=$(df -k -B M | grep $PARTITION | awk '{print $4}' | sed 's/M//g')
+		if [ $AVAILABLE -lt $SIZE ];then
+			sudo umount /mnt
+			error "Not enough space on partition $PARTITION"
+			SIZE=""
+		fi
+
+	done	
+	
+	while [ -z "$VAULT_USER" ]
+	do
+		read -p "Enter a name for the vault user : " VAULT_USER
+	done	
+	
+	while [ -z "$SSH_KEY" ]
+	do
+		read -p "Enter the name for the ssh key files : " SSH_KEY
+	done	
+	
+	# Check if the port number is valid / is note used
+	while [ -z "$SSH_PORT" ]
+    do
+        LISTEN=$(ss -tlnp | awk -F":" '{print $2}' | awk '{print $1}' | tail -n +2)
+        read -p "Enter the port that will be set for SSH : " SSH_PORT
+        test=$(grep -w $SSH_PORT<<< "$LISTEN") 
+        if ! [[ "$SSH_PORT" =~ ^[0-9]+$ ]] || [ "$SSH_PORT" -lt 1 ] || [ "$SSH_PORT" -gt 65535 ] || [ "$test" != "" ] || ! [[ "$SSH_PORT" =~ ^[0-9]+$ ]]; then
+
+            echo "invalide port number [1-65535] or the port is already used :"
+            SSH_PORT=""
+        fi
+    done
+}
+
 ############# MAIN ##############
 
 # ./cv_server.sh -h displays help message
@@ -154,25 +211,7 @@ if [ "$EUID" -eq 0 ];then
   	exit
 fi
 
-# Check if partition exists
-lsblk $PARTITION > /dev/null 2> /dev/null
-if [ "$?" -ne 0 ];then
-	error "Couldn't find partition $PARTITION"
-	exit
-fi
-
-# Check if there is enough size on partition
-MOUNTED=$(mount | grep $PARTITION)
-if [ -z $MOUNTED ];then
-	sudo mount $PARTITION /mnt
-fi
-
-AVAILABLE=$(df -k -B M | grep $PARTITION | awk '{print $4}' | sed 's/M//g')
-if [ $AVAILABLE -lt $SIZE ];then
-	sudo umount /mnt
-	error "Not enough space on partition $PARTITION"
-	exit
-fi
+check_var
 
 sudo umount /mnt
 
