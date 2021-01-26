@@ -11,7 +11,7 @@
 # Name of rsa key pair used to connect to vault (e.g. vault_key)
 SSH_KEY=vault_key
 # Name of the user used to create the vault on server (e.g. admin)
-SSH_USER=leco
+SSH_USER=""
 # IP of the server on which the vault is installed (e.g. 192.168.1.10)
 SSH_HOST="" #192.168.5.16
 # It's recommended to change default SSH port (e.g. 7222)
@@ -89,7 +89,7 @@ check_var() {
 	
 	while [ -z "$SSH_USER" ]
 	do
-		read -p "Enter SSH user name: " VAULT_USER
+		read -p "Enter SSH user name: " SSH_USER
 	done	
 	
 	while [ -z "$SSH_HOST" ]
@@ -130,7 +130,7 @@ init)
 	info "Downloading necessary packages"
 	#sudo apt install sshfs; check && info "Packages successfully installed"
 	info "Grabbing SSH key"
-	scp -P $SSH_PORT $SSH_USER@$SSH_HOST:/home/$VAULT_USER/.ssh/$SSH_KEY $HOME/.ssh/
+	scp -P $SSH_PORT $SSH_USER@$SSH_HOST:/home/$SSH_USER/.ssh/$SSH_KEY $HOME/.ssh/
     success "SSH key successfully acquired"
 	echo "
 Host VAULT
