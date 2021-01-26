@@ -130,8 +130,8 @@ setup_ssh(){
 		sudo mkdir $VAULT_HOME/.ssh
 	fi
 
-	sudo ssh-keygen -b 4096 -t rsa -f $VAULT_HOME/.ssh/$SSH_KEY -C $VAULT_USER@$(hostname)
-	cat $VAULT_HOME/.ssh/$SSH_KEY.pub | sudo tee -a $VAULT_HOME/.ssh/authorized_keys > /dev/null
+	ssh-keygen -b 4096 -t rsa -f $HOME/.ssh/$SSH_KEY -C $VAULT_USER@$(hostname)
+	cat $HOME/.ssh/$SSH_KEY.pub | sudo tee -a $VAULT_HOME/.ssh/authorized_keys > /dev/null
 	sudo chown -R $VAULT_USER:$VAULT_USER $VAULT_HOME/.ssh
 }
 
