@@ -122,11 +122,10 @@ if [ "$EUID" -eq 0 ];then
   	exit
 fi
 
-check_var
-
 case $1 in
 
 init)
+	check_var
 	info "Downloading necessary packages"
 	#sudo apt install sshfs; check && info "Packages successfully installed"
 	info "Grabbing SSH key"
