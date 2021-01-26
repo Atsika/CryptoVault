@@ -8,15 +8,15 @@
 # Variables with same name in client and server script must have same value
 
 # Partition on which the vault will be created (e.g. /dev/sda1)
-PARTITION=#/dev/sda9
+PARTITION=""
 # Size of the vault in MEGABYTES (e.g. 200)
-SIZE=#200
+SIZE=""
 # Name for the new user create only for the vault (e.g. vault)
-VAULT_USER=#coffre
+VAULT_USER=coffre
 # Name of new rsa key pair generated to connect to vault (e.g. vault_key)
-SSH_KEY=#vault_key
+SSH_KEY=vault_key
 # It's recommended to change default SSH port (e.g. 7222)
-SSH_PORT=#7222
+SSH_PORT=7222
 
 ############# CONSTANTS ##############
 
@@ -141,7 +141,8 @@ check_var() {
 	while [ -z "$PARTITION" ]
 	do
 		lsblk -l | awk 'NR==1 || / $/ {print $1"\t"$4}'
-		read -p "Enter the partition to be used for CryptoVault : " PARTITION
+		read -p "Enter the partition to be used for CryptoVault : " tmp
+		PARTITION=/dev/$tmp
 		lsblk $PARTITION > /dev/null 2> /dev/null
 		if [ $? -ne 0 ]; then
 			PARTITION=""
@@ -153,7 +154,7 @@ check_var() {
 	while [ -z "$SIZE" ]
 	do
 		read -p "Enter size for the vault in megabytes : " SIZE
-		PART_SIZE=$(lsblk -lb /dev/sda4 | awk 'FNR==2{print $4}')
+		PART_SIZE=$(lsblk -lb $PARTITION | awk 'FNR==2{print $4}')
 		if [ "$SIZE" -gt $PART_SIZE ];then
 			error "Not enough space on partition"
 			SIZE=""
