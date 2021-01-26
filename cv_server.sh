@@ -152,9 +152,10 @@ check_var() {
 	# check if there is enough space on the partition
 	while [ -z "$SIZE" ]
 	do
-		read -p "Enter the size of the partition for CryptoVault (Megabytes) : " SIZE
+		read -p "Enter size for the vault in megabytes : " SIZE
 		PART_SIZE=$(lsblk -lb /dev/sda4 | awk 'FNR==2{print $4}')
 		if [ "$SIZE" -gt $PART_SIZE ];then
+			error "Not enough space on partition"
 			SIZE=""
 		fi
 	done	
@@ -174,10 +175,9 @@ check_var() {
     do
         LISTEN=$(ss -tlnp | awk -F":" '{print $2}' | awk '{print $1}' | tail -n +2)
         read -p "Enter the port that will be set for SSH : " SSH_PORT
-        test=$(grep -w $SSH_PORT<<< "$LISTEN") 
-        if ! [[ "$SSH_PORT" =~ ^[0-9]+$ ]] || [ "$SSH_PORT" -lt 1 ] || [ "$SSH_PORT" -gt 65535 ] || [ "$test" != "" ] || ! [[ "$SSH_PORT" =~ ^[0-9]+$ ]]; then
-
-            echo "invalide port number [1-65535] or the port is already used :"
+        IS_LISTENING=$(grep -w $SSH_PORT <<< "$LISTEN") 
+        if ! [[ "$SSH_PORT" =~ ^[0-9]+$ ]] || [ "$SSH_PORT" -lt 1 ] || [ "$SSH_PORT" -gt 65535 ] || [ "$IS_LISTENING" != "" ]; then
+            error "Invalid port number or already in use"
             SSH_PORT=""
         fi
     done
@@ -190,21 +190,14 @@ if [ "$1" == "-h" ]; then
 	help
 fi
 
-# Check if variables are all set
-if [ -z "$PARTITION" ] || [ -z "$SIZE" ] || [ -z "$SSH_KEY" ] || [ -z "$SSH_PORT" ]; then
-	error "Error try -h for help and check IMPORTANT section"
-	exit
-fi
-
 # Don't run this script as root, you will be prompted if sudo needed
 if [ "$EUID" -eq 0 ];then 
 	error "Don't run this script as root."
   	exit
 fi
 
+# Check if all variables are set
 check_var
-
-sudo umount /mnt
 
 read -p "Partition $PARTITION will be overwritten. Proceed ? [Y/n] " confirm
 if [ "$confirm" != "y" ] && [ "$confirm" != "Y" ] && [ "$confirm" != "" ]; then
