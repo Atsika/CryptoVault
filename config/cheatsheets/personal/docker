@@ -1,0 +1,43 @@
+# check if containers running
+
+docker ps -aux
+
+#list all docker images locally
+
+docker images
+
+#download docker image from Docker Hub
+
+docker pull <image_name>
+
+#upload your own docker image to the Docker Hub
+
+docker push <image_name>
+
+#stop all running containers
+
+docker stop $(docker ps -aq)
+
+#remove all containers
+
+docker rm $(docker ps -aq)
+
+#remove all images
+
+docker rmi $(docker images -q)
+
+#build your own docker image based oon your Dockerfile in the same directory
+
+docker build -t <tag_your_image> .
+
+#run a container and specified port mapping
+
+docker run -p 80:80 <image_name>
+
+#run a container in background
+
+docker run -d <image_name>
+
+#run a container in interactive mode
+
+docker run -it <image_name> bash

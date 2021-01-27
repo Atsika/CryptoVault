@@ -1,0 +1,15 @@
+## LISTE INSTALLED PACKAGES
+dnf list installed
+
+## LIST ALL REPOSITORIES
+dnf repolist all
+
+## UPDATE
+dnfu  or  sudo dnf update
+
+## INSTALL
+dnfi  or  sudo dnf install
+
+## SEARCH
+dnfs  or  sudo dnf search
+
