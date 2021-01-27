@@ -141,7 +141,7 @@ Host VAULT
 	ssh -t VAULT "sudo cryptsetup luksOpen /dev/$VOLGROUP/$LOGVOLUME $ENC_LOGVOL && sudo mount /dev/mapper/$ENC_LOGVOL COFFRE"
 	mkdir $HOME/COFFRE
 	sshfs -o reconnect VAULT:COFFRE $HOME/COFFRE
-	sed -i 's/USER/$HOME/g' $HOME/COFFRE/MEMENTO/conf.yml
+	sed -i "s/USER/$HOME/g" $HOME/COFFRE/MEMENTO/conf.yml
 	sudo ln -s $HOME/COFFRE/MEMENTO/cheat /usr/sbin/cheat
 	info "Sourcing .bashrc"
 	source $HOME/COFFRE/ENVIRONNEMENT/bash/.bashrc
