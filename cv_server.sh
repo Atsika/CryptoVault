@@ -88,6 +88,19 @@ struct() {
 
 	sudo mount /dev/mapper/$ENC_LOGVOL $MNTPOINT
 	sudo mkdir -p $MNTPOINT/{CERTIFICAT,ENVIRONNEMENT/{bash,ksz,zsh},MEMENTO,SECURITE/{fail2ban,firewall,supervision},SERVER/{apache/{CENTOS8,DEBIAN10},bind,nginx,rsyslog,ssh}} && info "Creating arborescence"
+	
+	info "Set vault content"
+	
+	sudo tar -xvzf config/cheat.tar.gz -C $MNTPOINT/COFFRE/MEMENTO
+	sudo cp config/.bashrc $MNTPOINT/ENVIRONNEMENT/bash
+	sudo cp config/.zshrc $MNTPOINT/ENVIRONNEMENT/zsh
+	
+	#sudo cp config/jail.local /etc/fail2ban
+	#sudo cp config/ip.blacklist /etc/fail2ban
+	#sudo cp config/iptables-multiport.local /etc/fail2ban/action.d
+	
+	#sudo systemctl restart fail2ban
+	
 	sudo chown -R $VAULT_USER:$VAULT_USER $MNTPOINT
 	sudo umount $MNTPOINT
 	sudo cryptsetup luksClose /dev/mapper/$ENC_LOGVOL
@@ -208,7 +221,7 @@ if [ "$confirm" != "y" ] && [ "$confirm" != "Y" ] && [ "$confirm" != "" ]; then
 fi
 
 info "Downloading necessary packages"
-sudo apt-get -qq install -qq -y lvm2 cryptsetup > /dev/null 2> /dev/null && success "Packages successfully downloaded"
+sudo apt-get -qq install -qq -y lvm2 cryptsetup fail2ban trash-cli xclip > /dev/null 2> /dev/null && success "Packages successfully downloaded"
 
 info "Creating new user $VAULT_USER"
 sudo useradd -m --shell /bin/bash -G sudo $VAULT_USER && success "User successfully created"
