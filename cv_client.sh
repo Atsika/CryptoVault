@@ -137,6 +137,7 @@ Host VAULT
 	User $VAULT_USER
 	Port $SSH_PORT
 	IdentityFile $HOME/.ssh/$SSH_KEY" >> $HOME/.ssh/config
+	ssh -t VAULT "sudo cryptsetup luksOpen /dev/$VOLGROUP/$LOGVOLUME $ENC_LOGVOL && sudo mount /dev/mapper/$ENC_LOGVOL COFFRE && sed -i 's/USER/$HOME
 	success "Initialization finished. You can now mount the vault"
 	;;
 
