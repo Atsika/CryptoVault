@@ -91,7 +91,7 @@ struct() {
 	
 	info "Set vault content"
 	
-	sudo tar -xvzf config/cheat.tar.gz -C $MNTPOINT/COFFRE/MEMENTO
+	sudo tar -xvzf config/cheat.tar.gz -C $MNTPOINT/MEMENTO
 	sudo cp config/.bashrc $MNTPOINT/ENVIRONNEMENT/bash
 	sudo cp config/.zshrc $MNTPOINT/ENVIRONNEMENT/zsh
 	
