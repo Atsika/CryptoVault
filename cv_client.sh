@@ -137,7 +137,18 @@ Host VAULT
 	User $VAULT_USER
 	Port $SSH_PORT
 	IdentityFile $HOME/.ssh/$SSH_KEY" >> $HOME/.ssh/config
-	ssh -t VAULT "sudo cryptsetup luksOpen /dev/$VOLGROUP/$LOGVOLUME $ENC_LOGVOL && sudo mount /dev/mapper/$ENC_LOGVOL COFFRE && sed -i 's/USER/$HOME
+	info "Setting MEMENTO"
+	ssh -t VAULT "sudo cryptsetup luksOpen /dev/$VOLGROUP/$LOGVOLUME $ENC_LOGVOL && sudo mount /dev/mapper/$ENC_LOGVOL COFFRE"
+	mkdir $HOME/COFFRE
+	sshfs -o reconnect VAULT:COFFRE $HOME/COFFRE
+	sed -i 's/USER/$HOME/g' $HOME/COFFRE/MEMENTO/conf.yml
+	sudo ln -s $HOME/COFFRE/MEMENTO/cheat /usr/bin/cheat
+	info "Sourcing .bashrc"
+	source $HOME/COFFRE/ENVIRONNEMENT/bash/.bashrc
+	fusermount -u $HOME/COFFRE
+	rmdir $HOME/COFFRE
+	ssh -t VAULT "sudo umount COFFRE && sudo cryptsetup luksClose /dev/mapper/$ENC_LOGVOL"
+	success "MEMENTO set successfully"
 	success "Initialization finished. You can now mount the vault"
 	;;
 
