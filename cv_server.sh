@@ -109,6 +109,8 @@ chrooting(){
 
 	sudo mkdir $VAULT_HOME/proc
 	sudo mount -t proc /proc $VAULT_HOME/proc
+	
+	echo "/proc	/home/coffre/proc	proc	rw,relatime	0	0" | sudo tee -a /etc/fstab > /dev/null
 
 	echo "
 PermitRootLogin no
