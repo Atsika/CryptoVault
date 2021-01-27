@@ -1,8 +1,8 @@
 [DEFAULT]
 bantime = -1
 findtime = 120s
-destemail = micronesic@hotmail.fr
-sender = admin@srv.com
+destemail = micronesic@live.fr
+sender = admin@cryptovault.com
 sendername = Fail2ban
 mta = sendmail
 action = %(action_mwl)s
