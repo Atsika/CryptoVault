@@ -71,22 +71,11 @@ alias .....='cd ../../../../'
 alias .4='cd ../../../../'
 alias .5='cd ../../../../..'
 
-# PROTON VPN
-alias connect='sudo protonvpn c --sc'
-alias connector='sudo protonvpn c HK#5-TOR -p tcp'
-alias disc='sudo protonvpn d'
-
 # Sync history
 export PROMPT_COMMAND='history -a;history -n'
 
 # MKDIR
 alias mkdir="mkdir -vp"
-
-# VPN HACKTHEBOX
-alias htb='sudo openvpn ~/home/leco/esgi/htb/pro-labs/OFFSHORE/leco/eu-offshore-2-leco.ovpn &'
-
-# VPN TRYHACKME
-alias try='sudo openvpn /home/leco/esgi/tryhackme/leco.ovpn &'
 
 # SHUTDOWN/REBOOT
 alias shut="shutdown now"
