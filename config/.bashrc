@@ -28,28 +28,112 @@ alias df='df -h'
 # Clear shortcut
 alias c='clear'
 
-# Extract function
-ex ()
-{
-  if [ -f $1 ] ; then
-    case $1 in
-      *.tar.bz2)   tar xjf $1   ;;
-      *.tar.gz)    tar xzf $1   ;;
-      *.bz2)       bunzip2 $1   ;;
-      *.rar)       unrar x $1   ;;
-      *.gz)        gunzip $1    ;;
-      *.tar)       tar xf $1    ;;
-      *.tbz2)      tar xjf $1   ;;
-      *.tgz)       tar xzf $1   ;;
-      *.zip)       unzip $1     ;;
-      *.Z)         uncompress $1;;
-      *.7z)        7z x $1      ;;
-      *.deb)       ar x $1      ;;
-      *.tar.xz)    tar xf $1    ;;
-      *.tar.zst)   unzstd $1    ;;
-      *)           echo "'$1' cannot be extracted via ex()" ;;
-    esac
-  else
-    echo "'$1' is not a valid file"
-  fi
+# cd +ls -l
+function cl () {
+    cd "$1";
+    ls -l    
 }
+
+# EXTRACT
+ex () {
+    if [ -f $1 ] ; then
+        case $1 in
+            *.tar.bz2)   tar xjf $1     ;;
+            *.tar.gz)    tar xzf $1     ;;
+            *.bz2)       bunzip2 $1     ;;
+            *.rar)       unrar e $1     ;;
+            *.gz)        gunzip $1      ;;
+            *.tar)       tar xf $1      ;;
+            *.tbz2)      tar xjf $1     ;;
+            *.tgz)       tar xzf $1     ;;
+            *.zip)       unzip $1       ;;
+            *.Z)         uncompress $1  ;;
+            *.7z)        7z x $1        ;;
+            *)     echo "'$1' cannot be extracted via extract()" ;;
+        esac
+    else
+        echo "'$1' is not a valid file"
+    fi
+}
+
+# TRASH CLI "desctivé pour le tp de linux"
+alias rm="trash-put"
+alias rmlist="trash-list"
+alias rest="restore-trash"
+alias empty="trash-empty"
+
+# NAVIGATION
+alias cd..='cd ..'
+alias ..='cd ..'
+alias ...='cd ../../../'
+alias ....='cd ../../../../'
+alias .....='cd ../../../../'
+alias .4='cd ../../../../'
+alias .5='cd ../../../../..'
+
+# PROTON VPN
+alias connect='sudo protonvpn c --sc'
+alias connector='sudo protonvpn c HK#5-TOR -p tcp'
+alias disc='sudo protonvpn d'
+
+# Sync history
+export PROMPT_COMMAND='history -a;history -n'
+
+# MKDIR
+alias mkdir="mkdir -vp"
+
+# VPN HACKTHEBOX
+alias htb='sudo openvpn ~/home/leco/esgi/htb/pro-labs/OFFSHORE/leco/eu-offshore-2-leco.ovpn &'
+
+# VPN TRYHACKME
+alias try='sudo openvpn /home/leco/esgi/tryhackme/leco.ovpn &'
+
+# SHUTDOWN/REBOOT
+alias shut="shutdown now"
+alias reb="reboot"
+
+# WEB SERVER
+function serv {
+    declare -a state
+    state=( $(ip a | grep -m1 "state UP" | awk -F" " '{print $2}' | sed 's/://g') $(ip a | grep -m1 "tun0" | awk -F" " '{print $2}' | sed 's/://g') )
+    for i in "${state[@]}"
+    do
+       if [ ! -z "$i" ]; then
+            echo "$i  $(ip a show $i | grep -w "inet" | awk -F" " '{print $2}')"
+       fi
+    done
+    python3 -m http.server $1
+}
+
+# TASSIN3 WITH OUT SELINUX if error ==> before run "sudo setenforce 0" and after "sudo setenforce 1"
+tassin3 () { 
+    podman run --rm -v $HOME/.gnupg:/root/.gnupg:rw,Z -v $(pwd):/report:rw,Z -ti tassin3 "$@"
+}
+
+## GIT PUSH
+push () {
+    git pull && git add -A && git commit -m "commit $(date)" && git push
+}
+
+## inotifywait + tassin build dont forget do setenforce 1 when you are done
+build () {
+#    sudo setenforce 0
+    while inotifywait -e modify ./* 
+    do 
+        notify-send "Building" && tassin3 build && notify-send "Finished"  
+    done
+}
+
+# Xclip
+alias clip='xclip -r -sel c'
+
+# sudo
+alias suod='sudo'
+alias sodu='sudo'
+alias sduo='suod'
+alias sdou='suod'
+
+# NeoVim
+alias vim='nvim'
+alias imv='nvim'
+alias ivm='nvim'
