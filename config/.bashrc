@@ -126,3 +126,6 @@ alias sdou='suod'
 alias vim='nvim'
 alias imv='nvim'
 alias ivm='nvim'
+
+# Path to cheat config file
+export CHEAT_CONFIG_PATH="$HOME/COFFRE/MEMENTO/conf.yml"
