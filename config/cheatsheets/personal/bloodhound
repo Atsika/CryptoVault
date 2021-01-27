@@ -1,2 +1,0 @@
-# Get content to import in BloodHound
-Invoke-Bloodhound -CollectionMethod All -Domain CONTROLLER.local -ZipFileName loot.zip
