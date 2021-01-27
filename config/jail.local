@@ -1,0 +1,15 @@
+[DEFAULT]
+bantime = -1
+findtime = 120s
+destemail = micronesic@hotmail.fr
+sender = admin@srv.com
+sendername = Fail2ban
+mta = sendmail
+action = %(action_mwl)s
+
+[sshd]
+enable = true
+port = 7222
+filter = sshd
+logpath = /var/log/auth.log
+maxretry = 3
