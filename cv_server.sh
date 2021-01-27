@@ -95,11 +95,11 @@ struct() {
 	sudo cp config/.bashrc $MNTPOINT/ENVIRONNEMENT/bash
 	sudo cp config/.zshrc $MNTPOINT/ENVIRONNEMENT/zsh
 	
-	#sudo cp config/jail.local /etc/fail2ban
-	#sudo cp config/ip.blacklist /etc/fail2ban
-	#sudo cp config/iptables-multiport.local /etc/fail2ban/action.d
+	sudo cp config/jail.local /etc/fail2ban
+	sudo cp config/ip.blacklist /etc/fail2ban
+	sudo cp config/iptables-multiport.local /etc/fail2ban/action.d
 	
-	#sudo systemctl restart fail2ban
+	sudo systemctl restart fail2ban
 	
 	sudo chown -R $VAULT_USER:$VAULT_USER $MNTPOINT
 	sudo umount $MNTPOINT
