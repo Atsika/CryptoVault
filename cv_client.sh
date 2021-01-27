@@ -129,7 +129,7 @@ init)
 	info "Downloading necessary packages"
 	#sudo apt install sshfs; check && info "Packages successfully installed"
 	info "Grabbing SSH key"
-	scp -P $SSH_PORT $SSH_USER@$SSH_HOST:/home/$SSH_USER/.ssh/$SSH_KEY $HOME/.ssh/
+	scp -q -P $SSH_PORT $SSH_USER@$SSH_HOST:/home/$SSH_USER/.ssh/$SSH_KEY $HOME/.ssh/
     success "SSH key successfully acquired"
 	echo "
 Host VAULT
