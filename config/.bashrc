@@ -2,6 +2,8 @@
 
 # Note: PS1 and umask are already set in /etc/profile. You should not
 # need this unless you want different defaults for root.
+prompt_color='[\033[;94m]'
+prompt_color='[\033[;94m]'
 prompt_symbol=💀
 PS1=$prompt_color'┌──${debian_chroot:+($debian_chroot)──}('$info_color'\u${prompt_symbol}\h'$prompt_color')-[\[\033[0;1m\]\w'$prompt_color']\n'$prompt_color'└─'$info_color'\$\[\033[0m\] '
 
