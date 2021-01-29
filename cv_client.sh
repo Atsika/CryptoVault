@@ -152,7 +152,7 @@ Host VAULT
 
 mount)
 	info "Decrypting vault"
-	ssh -t VAULT "sudo cryptsetup luksOpen /dev/$VOLGROUP/$LOGVOLUME $ENC_LOGVOL && sudo mount /dev/mapper/$ENC_LOGVOL COFFRE"
+	ssh -q -t VAULT "sudo cryptsetup luksOpen /dev/$VOLGROUP/$LOGVOLUME $ENC_LOGVOL && sudo mount /dev/mapper/$ENC_LOGVOL COFFRE"
 	success "Vault successfully decrypted"
 	info "Mouting vault"
 	mkdir $HOME/COFFRE
@@ -164,11 +164,12 @@ mount)
 
 umount)
 	info "Unmounting vault"
-	fusermount -u $HOME/COFFRE
+	fusermount -u $HOME/COFFREln: failed to access '/usr/bin/cheat': Permission denied
+
 	success "Vault successfully unmounted"
 	rmdir $HOME/COFFRE
 	info "Encrypting and closing vault"
-	ssh -t VAULT "sudo umount COFFRE && sudo cryptsetup luksClose /dev/mapper/$ENC_LOGVOL"
+	ssh  -q -t VAULT "sudo umount COFFRE && sudo cryptsetup luksClose /dev/mapper/$ENC_LOGVOL"
 	success "Vault successfully closed"
 	;;
 
