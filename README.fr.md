@@ -24,7 +24,7 @@ CryptoVault est un coffre chiffré distant permettant de stocker vos fichiers de
 
 ### Serveur
 
-```shell
+```bash
 git clone https://github.com/Atsika/CryptoVault.git
 cd CryptoVault
 chmod +x cv_server.sh
@@ -32,7 +32,7 @@ chmod +x cv_server.sh
 
 ### Client
 
-```shell
+```bash
 git clone https://github.com/Atsika/CryptoVault.git
 cd CryptoVault
 chmod +x cv_client.sh
