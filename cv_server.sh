@@ -95,6 +95,8 @@ struct() {
 	sudo cp config/.bashrc $MNTPOINT/ENVIRONNEMENT/bash
 	sudo cp config/.zshrc $MNTPOINT/ENVIRONNEMENT/zsh
 	
+	sudo cp config/my_banner /etc/ssh/my_banner
+	
 	sudo cp config/jail.local /etc/fail2ban
 	sudo cp config/ip.blacklist /etc/fail2ban
 	sudo cp config/iptables-multiport.local /etc/fail2ban/action.d
