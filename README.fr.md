@@ -11,13 +11,13 @@ CryptoVault est un coffre chiffré distant permettant de stocker vos fichiers de
 
 ## Fonctionnalités
 
-* Installation automatique
+* Installation automatique ⚙️
 * Chiffrement AES-256-XTS
 * Chroot
-* Protection contre le bruteforce
+* Protection contre le bruteforce 👊
 * Alerte par mail 📧
-* Utilisation de blacklist
-* Script client tout-en-un
+* Utilisation de blacklist 🏴
+* Script client tout-en-un 1️⃣
 * Pur bash 💯
 
 ## Installation
