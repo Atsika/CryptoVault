@@ -9,13 +9,14 @@
 
 CryptoVault est un coffre chiffré distant permettant de stocker vos fichiers de manière sécurisée. 
 
-Basically an encrypted logic volume is hosted on a server that you mount remotely on your machine.  
-
 ## Fonctionnalités
 
-* Installateur automatique
-* chiffrement AES-256-XTS
-* Chrooté
+* Installation automatique
+* Chiffrement AES-256-XTS
+* Chroot
+* Protection contre le bruteforce
+* Alerte par mail
+* Utilisation de blacklist
 * Script client tout-en-un
 * Pur bash
 
@@ -23,7 +24,7 @@ Basically an encrypted logic volume is hosted on a server that you mount remotel
 
 ### Serveur
 
-```
+```shell
 git clone https://github.com/Atsika/CryptoVault.git
 cd CryptoVault
 chmod +x cv_server.sh
@@ -31,50 +32,10 @@ chmod +x cv_server.sh
 
 ### Client
 
-```
+```shell
 git clone https://github.com/Atsika/CryptoVault.git
 cd CryptoVault
 chmod +x cv_client.sh
-```
-
-## Aide
-
-### Serveur
-
-```
-NAME
-	  CryptoVault - Create an encrypted vault (SERVER)
-		  
-SYNTAX
-	  ./cv_server.sh
-		  
-IMPORTANT
-	  You can set variables at the top of the script to avoid being prompted.
-	  Don't run this script as root.
-	  Run it with a user that have sudo rights.
-```
-
-### Client
-
-```
-NAME
-	  CryptoVault - Manage an encrypted vault (CLIENT)
-		  
-SYNTAX
-	  ./cv_client.sh [command]
-		  
-PARAMETERS
-	  [command]     Command to execute
-
-COMMANDS
-	  init			initialize first connection
-	  mount			mount remote vault
-	  umount		unmount remote vault
-
-IMPORTANT
-	  Don't forget to fill variables at the top of the script.
-	  Don't run this script as root.
-	  Run it with a user that have sudo rights.
 ```
 
 ## Utilisation
@@ -83,74 +44,73 @@ Il existe 2 manières d'utiliser les scripts pour CryptoVault :
 * Définir les variables en haut du script
 * Saisir les valeurs lorsque le script le demande
 
-> Si des variables ne sont pas définies, le script les demandera automatiquement lors de l'exécution.
-> Les variables portant le même nom dans le script client et serveur (en gras ci-dessous) doivent avoir la même valeur.
+> 💡 Si des variables ne sont pas définies, le script les demandera automatiquement lors de l'exécution.  
+> Les variables portant le même nom dans le script client et serveur (en gras ci-dessous) doivent avoir la même valeur.  
 > Il est recommandé de ne pas modifier les variables dans la sections 'CONSTANTS'.
 
-### Serveur
+⚠️ Le script serveur doit être lancé avec un utilisateur possèdant les **droits sudo** mais qui **n'est pas root**.  
 
-#### Variables
+### Variables
 
-Les variables à configurer dans le script serveur sont les suivantes :
+| Nom        | Description                                                           | Exemple      | Script        |
+|------------|-----------------------------------------------------------------------|--------------|---------------|
+| PARTITON   | Nom de la partition sur laquelle sera installé le coffre              | /dev/sda1    | server        |
+| SIZE       | Taille du coffre en megaoctet (Mo)                                    | 200          | server        |
+| VAULT_USER | Nom du nouvel utilisateur créé specialement pour la gestion du coffre | coffre       | server/client |
+| SSH_KEY    | Nom des clés SSH générées pour le VAULT_USER                          | vault_key    | server/client |
+| SSH_PORT   | Port sur lequel le service SSH doit écouter                           | 7222         | server/client |
+| SSH_HOST   | Hôte qui héberge le coffre                                            | 192.168.1.10 | client        |
+| SSH_USER   | Nom de l'utilisateur qui a exécuté le script serveur                  | admin        | client        |
 
-* PARTITION : Nom de la partition sur laquelle sera installé le coffre.
-    * ex : /dev/sda1
+> 💡 Il est recommandé de changer le port SSH pour des raisons de sécurité.
 
-* SIZE : Taille du coffre en megaoctet (Mo).
-    * ex : 200
+### Exécution
 
-* **VAULT_USER** : Nom du nouvel utilisateur créé specialement pour la gestion du coffre.
-    * ex : coffre
+#### Serveur
 
-* **SSH_KEY** : Nom des clés SSH générées pour le VAULT_USER.
-    * ex : coffre_key
+`./cv_server.sh` &rarr; Installe et configure le serveur.
 
-* **SSH_PORT** : Port sur lequel le service SSH doit écouter. Il est recommandé de le changer pour des raisons de sécurité.
-    * ex : 7222
+#### Client
 
-##### Exécution
+`. ./cv_client.sh init` &rarr; Initialise la première connexion au coffre.  
+`. ./cv_client.sh mount` &rarr; Déchiffre et ontre le coffre dans $HOME/COFFRE.  
+`. ./cv_client umount` &rarr; Démonte le coffre et le chiffre.
 
-Le script serveur doit être lancé avec un utilisateur possèdant les **droits sudo** mais qui **n'est pas root**.  
-
-Pour lancer le script serveur, tapez `./cv_server.sh` dans un terminal.
-
-### Client
-
-#### Variables
-
-Les variables à configurer dans le script client sont les suivantes :
-
-* **SSH_KEY** : Nom des clés SSH générées pour le VAULT_USER.
-    * ex : coffre_key
-
-* SSH_USER : Nom de l'utilisateur qui a exécuté le script serveur.
-    * ex : admin
-
-* SSH_HOST : Hôte qui héberge le coffre.
-    * ex : 192.168.1.10
-
-* **SSH_PORT** : Port sur lequel le service SSH écoute.
-    * ex : 7222
-
-* **VAULT_USER** : Nom de l'utilisateur créé pour la gestion du coffre
-    * ex : coffre
-
-#### Exécution
-
-Le script serveur doit être lancé avec un utilisateur possèdant les **droits sudo** mais qui **n'est pas root**.  
-
-Le script client prend en paramêtre un argument :
-
-* **init** : Initialise la première connexion au coffre.
-* **mount** : Déchiffre et ontre le coffre dans $HOME/COFFRE.
-* **umount** : Démonte le coffre et le chiffre.
+⚠️ Notez que le point est important lors de l'exécution du script client.
 
 ## Fonctionnement
 
 ### Serveur
 
-[text]
+* Installation des paquets nécessaires  
+* Configuration du serveur SMTP (Postfix) pour l'envoie d'alertes  
+* Création de l'utilisateur dédié au coffre et attributions des droits (sudo)  
+* Configuration des accès authentifiés par clé SSH  
+* Création du volume physique  
+* Création du groupe volume  
+* Création et chiffrement du volume logique  
+* Formatage du volume logique chiffré  
+* Chroot de l'utilisateur dédié au coffre  
+* Sécurisation du service SSH  
+* Création de la structure du coffre  
+* Déploiement des fichiers de configuration  
+* Redémarrage des services affectés par le script
 
 ### Client
 
-[text]
+#### init
+
+* Installation des paquets nécessaires 
+* Récupération de la clé privée SSH
+* Configuration de l'hôte SSH
+* Création de lien symbolique (cheat)
+
+#### mount
+
+* Déchiffrement du coffre
+* Montage du coffre dans $HOME/COFFRE
+
+#### umount
+
+* Démontage du coffre
+* Chiffrement du coffre
