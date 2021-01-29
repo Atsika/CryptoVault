@@ -54,11 +54,11 @@ Il existe 2 manières d'utiliser les scripts pour CryptoVault :
 
 | Nom        | Description                                                           | Exemple      | Script        |
 |------------|-----------------------------------------------------------------------|--------------|---------------|
-| PARTITON   | Nom de la partition sur laquelle sera installé le coffre              | /dev/sda1    | server        |
-| SIZE       | Taille du coffre en megaoctet (Mo)                                    | 200          | server        |
-| VAULT_USER | Nom du nouvel utilisateur créé specialement pour la gestion du coffre | coffre       | server/client |
-| SSH_KEY    | Nom des clés SSH générées pour le VAULT_USER                          | vault_key    | server/client |
-| SSH_PORT   | Port sur lequel le service SSH doit écouter                           | 7222         | server/client |
+| PARTITON   | Nom de la partition sur laquelle sera installé le coffre              | /dev/sda1    | serveur        |
+| SIZE       | Taille du coffre en megaoctet (Mo)                                    | 200          | serveur        |
+| VAULT_USER | Nom du nouvel utilisateur créé specialement pour la gestion du coffre | coffre       | serveur/client |
+| SSH_KEY    | Nom des clés SSH générées pour le VAULT_USER                          | vault_key    | serveur/client |
+| SSH_PORT   | Port sur lequel le service SSH doit écouter                           | 7222         | serveur/client |
 | SSH_HOST   | Hôte qui héberge le coffre                                            | 192.168.1.10 | client        |
 | SSH_USER   | Nom de l'utilisateur qui a exécuté le script serveur                  | admin        | client        |
 
