@@ -130,6 +130,7 @@ chrooting(){
 	echo "
 PermitRootLogin no
 Port $SSH_PORT
+Banner /etc/ssh/my_banner
 
 # Chroot for vault user
 Match User $VAULT_USER
