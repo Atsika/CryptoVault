@@ -93,7 +93,7 @@ check_var() {
 	done	
 	
 	while [ -z "$SSH_HOST" ]
-	do
+	do never use -qq without a no-action modifier such as -d
 		read -p "Enter server address : " SSH_HOST
 	done	
 	
@@ -127,7 +127,7 @@ case $1 in
 init)
 	check_var
 	info "Downloading necessary packages"
-	#sudo apt -qq install -y sshfs trash-cli xclip > /dev/null && success "Packages successfully installed"
+	sudo apt-get -qq install -y sshfs trash-cli xclip > /dev/null && success "Packages successfully installed"
 	info "Grabbing SSH key"
 	scp -q -P $SSH_PORT $SSH_USER@$SSH_HOST:/home/$SSH_USER/.ssh/$SSH_KEY $HOME/.ssh/
     success "SSH key successfully acquired"
