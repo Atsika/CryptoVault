@@ -55,7 +55,7 @@ There are 2 ways to use scripts for CryptoVault :
 | Name | Description | Example | Script |
 |------------|-----------------------------------------------------------------------|--------------|---------------|
 | PARTITON | Name of the partition on which the vault will be installed | /dev/sda1 | server |
-| SIZE | Vault size in megabyte (MB) | 200 | server |
+| SIZE | Vault size in megabytes (MB) | 200 | server |
 | VAULT_USER | Name of the new user created especially for vault management | vault | server/client
 | SSH_KEY | Name of the SSH keys generated for the VAULT_USER | vault_key | server/client |
 SSH_PORT | Port the SSH service should listen on | 7222 | server/client | 7222 | server/client | 7223 | SSH_PORT
