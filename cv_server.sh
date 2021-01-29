@@ -234,7 +234,7 @@ fi
 
 info "Downloading necessary packages"
 mail
-sudo apt-get -qq install -qq -y lvm2 cryptsetup fail2ban xclip trash-cli > /dev/null 2> /dev/null && success "Packages successfully downloaded"
+sudo apt-get -qq install -qq -y lvm2 cryptsetup fail2ban mailutils xclip trash-cli > /dev/null 2> /dev/null && success "Packages successfully downloaded"
 
 info "Creating new user $VAULT_USER"
 sudo useradd -m --shell /bin/bash -G sudo $VAULT_USER && success "User successfully created"
