@@ -153,7 +153,7 @@ setup_ssh(){
 	sudo chown -R $VAULT_USER:$VAULT_USER $VAULT_HOME/.ssh
 }
 
-mail() {
+setup_mail() {
 	sudo debconf-set-selections <<< "postfix postfix/mailname string esgi.fr" > /dev/null 2> /dev/null
 	sudo debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Site'" > /dev/null 2> /dev/null
 	sudo apt-get install -y --assume-yes postfix > /dev/null 2> /dev/null
@@ -233,7 +233,7 @@ if [ "$confirm" != "y" ] && [ "$confirm" != "Y" ] && [ "$confirm" != "" ]; then
 fi
 
 info "Downloading necessary packages"
-mail
+setup_mail
 sudo apt-get -qq install -qq -y lvm2 cryptsetup fail2ban mailutils xclip trash-cli > /dev/null 2> /dev/null && success "Packages successfully downloaded"
 
 info "Creating new user $VAULT_USER"
