@@ -1,4 +1,4 @@
-# CryptoVault - Coffre chiffré distant
+# CryptoVault - Coffre chiffré distant 🔒
 
 <p align="center">
   <img src="https://img.shields.io/badge/script-bash-green">  <img src="https://img.shields.io/badge/os-linux-blue">  <img src="https://img.shields.io/badge/made%20with-love-red">  <img src="https://img.shields.io/badge/secure-100%25-lightgrey"><br>
@@ -15,10 +15,10 @@ CryptoVault est un coffre chiffré distant permettant de stocker vos fichiers de
 * Chiffrement AES-256-XTS
 * Chroot
 * Protection contre le bruteforce
-* Alerte par mail
+* Alerte par mail 📧
 * Utilisation de blacklist
 * Script client tout-en-un
-* Pur bash
+* Pur bash 💯
 
 ## Installation
 
