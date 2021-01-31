@@ -129,6 +129,9 @@ init)
 	info "Downloading necessary packages"
 	sudo apt-get -qq install -y sshfs trash-cli xclip > /dev/null && success "Packages successfully installed"
 	info "Grabbing SSH key"
+	if [ ! -d "$HOME/.ssh" ]; then
+		mkdir $HOME/.ssh
+	fi
 	scp -q -P $SSH_PORT $SSH_USER@$SSH_HOST:/home/$SSH_USER/.ssh/$SSH_KEY $HOME/.ssh/
     success "SSH key successfully acquired"
 	echo "
