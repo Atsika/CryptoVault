@@ -69,7 +69,7 @@ ${BOLD}COMMANDS${NC}
 	  umount		unmount remote vault
 
 ${BOLD}IMPORTANT${NC}
-	  Don't forget to fill variables at the top of the script.
+	  Fill variables at the top of the script to avoid being prompted.
 	  Don't run this script as root.
 	  Run it with a user that have sudo rights.
 "
