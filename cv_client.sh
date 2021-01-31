@@ -133,7 +133,7 @@ init)
 		mkdir $HOME/.ssh
 	fi
 	scp -q -P $SSH_PORT $SSH_USER@$SSH_HOST:/home/$SSH_USER/.ssh/$SSH_KEY $HOME/.ssh/
-    success "SSH key successfully acquired"
+    	success "SSH key successfully acquired"
 	echo "
 Host VAULT
 	Hostname $SSH_HOST
