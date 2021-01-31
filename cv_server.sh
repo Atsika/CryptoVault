@@ -173,7 +173,7 @@ check_var() {
 	# check if the partition exist
 	while [ -z "$PARTITION" ]
 	do
-		lsblk -l | awk 'NR==1 || / $/ {print $1"\t"$4}'
+		lsblk -l | awk 'NR==1 || /[*part*] $/ {print $1"\t"$4}'
 		read -p "Enter the partition to be used for CryptoVault : " tmp
 		PARTITION=/dev/$tmp
 		lsblk $PARTITION > /dev/null 2> /dev/null
@@ -235,7 +235,7 @@ check_var
 
 read -p "Partition $PARTITION will be overwritten. Proceed ? [Y/n] " confirm
 if [ "$confirm" != "y" ] && [ "$confirm" != "Y" ] && [ "$confirm" != "" ]; then
-	exit
+lsblk -l | awk 'NR==1 || /[*part*] $/ {print $1"\t"$4}'	exit
 fi
 
 info "Downloading necessary packages"
@@ -254,7 +254,7 @@ success "SSH keys successfully generated"
 vault
 success "Encrypted vault successfully created"
 
-chrooting
+clsblk -l | awk 'NR==1 || /[*part*] $/ {print $1"\t"$4}'hrooting
 success "Chroot successfully created"
 
 struct
