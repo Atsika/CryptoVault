@@ -116,3 +116,5 @@ SSH_PORT | Port the SSH service should listen on | 7222 | server/client | 7222 |
 
 * Unmoun vault
 * Encrypt vault
+
+<p align="center">Made with ❤️ by Atsika & Léco</p>
