@@ -97,11 +97,11 @@ struct() {
 	sudo cp config/.zshrc $MNTPOINT/ENVIRONNEMENT/zsh
 	
 	sudo cp config/my_banner /etc/ssh/my_banner
-	sudo cp config/mybanner /$MNTPOINT/SERVER/ssh
-	sudo cp /etc/ssh/sshd_conf $MNTPOINT/SERVER/ssh
+	sudo cp config/my_banner /$MNTPOINT/SERVER/ssh
+	sudo cp /etc/ssh/sshd_config $MNTPOINT/SERVER/ssh
 	
 	sudo cp config/jail.local /etc/fail2ban
-	sudo cp condif/jail.local $MNTPOINT/SECURITE/fail2ban
+	sudo cp config/jail.local $MNTPOINT/SECURITE/fail2ban
 	sudo cp config/ip.blacklist /etc/fail2ban
 	sudo cp config/ip.blacklist $MNTPOINT/SECURITE/fail2ban
 	sudo cp config/iptables-multiport.local /etc/fail2ban/action.d
