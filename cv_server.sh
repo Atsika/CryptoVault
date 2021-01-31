@@ -235,7 +235,7 @@ check_var
 
 read -p "Partition $PARTITION will be overwritten. Proceed ? [Y/n] " confirm
 if [ "$confirm" != "y" ] && [ "$confirm" != "Y" ] && [ "$confirm" != "" ]; then
-lsblk -l | awk 'NR==1 || /[*part*] $/ {print $1"\t"$4}'	exit
+	exit
 fi
 
 info "Downloading necessary packages"
@@ -254,7 +254,7 @@ success "SSH keys successfully generated"
 vault
 success "Encrypted vault successfully created"
 
-clsblk -l | awk 'NR==1 || /[*part*] $/ {print $1"\t"$4}'hrooting
+chrooting
 success "Chroot successfully created"
 
 struct
