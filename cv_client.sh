@@ -93,7 +93,7 @@ check_var() {
 	done	
 	
 	while [ -z "$SSH_HOST" ]
-	do never use -qq without a no-action modifier such as -d
+	do
 		read -p "Enter server address : " SSH_HOST
 	done	
 	
