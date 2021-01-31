@@ -117,4 +117,4 @@ Il existe 2 manières d'utiliser les scripts pour CryptoVault :
 * Démontage du coffre
 * Chiffrement du coffre
 
-<p align="center">Made with heart by Atsika & Léco</p>
+<p align="center">Made with ❤️ by Atsika & Léco</p>
