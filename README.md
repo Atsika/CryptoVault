@@ -2,7 +2,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/script-bash-green">  <img src="https://img.shields.io/badge/os-linux-blue">  <img src="https://img.shields.io/badge/made%20with-love-red">  <img src="https://img.shields.io/badge/secure-100%25-lightgrey"><br>
-<img src="cryptovault.png">
+<img src="images/cryptovault.png">
  </p>
 
 ### Description
@@ -70,13 +70,15 @@ SSH_PORT | Port the SSH service should listen on | 7222 | server/client | 7222 |
 
 `./cv_server.sh` &rarr; Installs and configures the server.
 
+<p align="center"><img src="images/cv_server.gif"></p>
+
 #### Client
 
 `./cv_client.sh init` &rarr; Initiates the first connection to the vault.  
-`. ./cv_client.sh mount` &rarr; Decrypts and mount the vault in $HOME/COFFRE.  
+`./cv_client.sh mount` &rarr; Decrypts and mount the vault in $HOME/COFFRE.  
 `./cv_client.sh mount` &rarr; Unmounts the vault and encrypts it.
 
-⚠️ Note that the point is important when executing the client script.
+<p align="center"><img src="images/cv_client.gif"></p>
 
 ## Functioning
 
