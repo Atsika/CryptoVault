@@ -160,8 +160,6 @@ mount)
 	info "Mouting vault"
 	mkdir $HOME/COFFRE
 	sshfs -o reconnect VAULT:COFFRE $HOME/COFFRE
-	info "Sourcing .bashrc"
-	source $HOME/COFFRE/ENVIRONNEMENT/bash/.bashrc
 	success "Vault successfully mounted on $HOME/COFFRE"
 	;;
 
