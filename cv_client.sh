@@ -165,8 +165,7 @@ mount)
 
 umount)
 	info "Unmounting vault"
-	fusermount -u $HOME/COFFREln: failed to access '/usr/bin/cheat': Permission denied
-
+	fusermount -u $HOME/COFFRE
 	success "Vault successfully unmounted"
 	rmdir $HOME/COFFRE
 	info "Encrypting and closing vault"
