@@ -127,7 +127,7 @@ case $1 in
 init)
 	check_var
 	info "Downloading necessary packages"
-	#sudo apt-get -qq install -y sshfs trash-cli xclip > /dev/null && success "Packages successfully installed"
+	sudo apt-get -qq install -y sshfs trash-cli xclip > /dev/null && success "Packages successfully installed"
 	info "Grabbing SSH key"
 	if [ ! -d "$HOME/.ssh" ]; then
 		mkdir $HOME/.ssh
