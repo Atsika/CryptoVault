@@ -2,7 +2,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/script-bash-green">  <img src="https://img.shields.io/badge/os-linux-blue">  <img src="https://img.shields.io/badge/made%20with-love-red">  <img src="https://img.shields.io/badge/secure-100%25-lightgrey"><br>
-<img src="cryptovault.png">
+<img src="images/cryptovault.png">
  </p>
 
 ## Description
@@ -70,13 +70,15 @@ Il existe 2 manières d'utiliser les scripts pour CryptoVault :
 
 `./cv_server.sh` &rarr; Installe et configure le serveur.
 
+<p align="center"><img src="images/cv_server.gif"></p>
+
 #### Client
 
-`. ./cv_client.sh init` &rarr; Initialise la première connexion au coffre.  
-`. ./cv_client.sh mount` &rarr; Déchiffre et ontre le coffre dans $HOME/COFFRE.  
-`. ./cv_client umount` &rarr; Démonte le coffre et le chiffre.
+`./cv_client.sh init` &rarr; Initialise la première connexion au coffre.  
+`./cv_client.sh mount` &rarr; Déchiffre et ontre le coffre dans $HOME/COFFRE.  
+`./cv_client umount` &rarr; Démonte le coffre et le chiffre.
 
-⚠️ Notez que le point est important lors de l'exécution du script client.
+<p align="center"><img src="images/cv_client.gif"></p>
 
 ## Fonctionnement
 
